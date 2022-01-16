@@ -1,6 +1,7 @@
 import http from 'http'
 import ping from 'net-ping'
 import dotenv from 'dotenv'
+import moment from 'moment'
 import Push from 'pushover-notifications'
 
 // Loading '.env'
@@ -59,18 +60,19 @@ function pingIp(remoteAdress) {
         // Session ping
         session.pingHost(remoteAdress, (error, target, sent, rcvd) => {
             const ms = rcvd - sent
+            const receive = moment(new Date()).format('DD.MM.YY HH:mm:ss')
             if (error) {
                 if (error instanceof ping.RequestTimedOutError) {
-                    const report = `${target} : Not alive (ms=${ms})`
+                    const report = `${receive} -> ${target} : Not alive (ms=${ms})`
                     console.log(report)
                     reject(report)
                 } else {
-                    const report = `${target} : ${error.toString()} (ms=${ms})`
+                    const report = `${receive} -> ${target} : ${error.toString()} (ms=${ms})`
                     console.log(report)
                     reject(report)
                 }
             } else {
-                const report = `${target} : Alive (ms=${ms})`
+                const report = `${receive} -> ${target} : Alive (ms=${ms})`
                 console.log(report)
                 resolve(report)
             }
