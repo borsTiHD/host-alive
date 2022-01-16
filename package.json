@@ -16,6 +16,7 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "moment": "^2.29.1",
     "net-ping": "^1.2.3",
     "pushover-notifications": "^1.2.2"
   },
