@@ -1,21 +1,19 @@
 module.exports = {
-    root: true,
     env: {
+        es2021: true,
         node: true
     },
+    extends: 'eslint:recommended',
     parserOptions: {
-        parser: '@babel/eslint-parser',
-        requireConfigFile: false
+        ecmaVersion: 'latest',
+        sourceType: 'module'
     },
-    extends: [],
-    plugins: [],
     // add your custom rules here
     rules: {
         indent: ['error', 4, {
             ignoredNodes: ['TemplateLiteral'],
             SwitchCase: 1
-        }
-        ],
+        }],
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
         'comma-dangle': ['error', 'never'],
@@ -32,6 +30,6 @@ module.exports = {
         'global-require': 0,
         'import/no-unresolved': 0,
         'import/newline-after-import': 0,
-        'no-underscore-dangle': 0,
+        'no-underscore-dangle': 0
     }
 }

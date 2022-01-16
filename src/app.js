@@ -31,9 +31,9 @@ async function main() {
     const session = ping.createSession()
     session.pingHost(remoteAdress, (error, target) => {
         if (error) {
-            console.log(target + ": " + error.toString ())
+            console.log(target + ': ' + error.toString ())
         } else {
-            console.log(target + ": Alive")
+            console.log(target + ': Alive')
         }
     })
 }
