@@ -16,7 +16,8 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "net-ping": "^1.2.3"
+    "net-ping": "^1.2.3",
+    "pushover-notifications": "^1.2.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

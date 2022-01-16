@@ -1,6 +1,7 @@
 import http from 'http'
 import ping from 'net-ping'
 import dotenv from 'dotenv'
+import Push from 'pushover-notifications'
 
 // Loading '.env'
 dotenv.config()
@@ -10,6 +11,9 @@ const isDev = process.env.NODE_ENV === 'development'
 const REPEAT = process.env.REPEAT || 10
 const CONTINOUS = process.env.CONTINOUS ? true : false
 const HOST = process.env.HOST || 'http://www.google.de' // 'http://raspberrypi/'
+
+// Push object
+const notification = createPushover()
 
 // Dev Check
 if (isDev) {
@@ -21,8 +25,7 @@ if (isDev) {
     }
 }
 
-// Returns Promise
-// Resolves IP Adress of URL
+// Resolves IP Adress for given URL
 function getIpByHost(host) {
     return new Promise((resolve, reject) => {
         http.get(host, function(res) {
@@ -36,7 +39,7 @@ function getIpByHost(host) {
     })
 }
 
-// Ping Wrapper
+// Ping wrapper
 function pingIp(remoteAdress) {
     return new Promise((resolve, reject) => {
         const options = {
@@ -72,6 +75,32 @@ function pingIp(remoteAdress) {
     })
 }
 
+// Pushing message through pushover
+function createPushover() {
+    const PUSHOVER_USER = process.env.PUSHOVER_USER || false
+    const PUSHOVER_TOKEN = process.env.PUSHOVER_TOKEN || false
+    if (PUSHOVER_USER && PUSHOVER_TOKEN) {
+        return new Push( {
+            user: PUSHOVER_USER,
+            token: PUSHOVER_TOKEN
+        })
+    }
+    return false
+}
+
+// Sending push notification through pushover
+function sendNotification(msg) {
+    if (notification) {
+        notification.send(msg, (err, result) => {
+            if (err) {
+                console.error('Error on sending Push Notification:', err)
+                throw err
+            }
+            console.log('Push Notification send:', result)
+        })
+    }
+}
+
 // Waiting between pings
 function wait(time){
     return new Promise((resolve) => {
@@ -104,6 +133,11 @@ async function main() {
             await wait(1000)
         }
     }
+
+    sendNotification({
+        message: 'Yaaayy... test successful.',	// required
+        title: 'Ping'
+    })
 }
 
 // Starting...
