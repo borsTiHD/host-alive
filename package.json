@@ -9,7 +9,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev:run": "nodemon ./src/app.js",
+    "dev:run": "node ./src/app.js",
     "dev": "cross-env NODE_ENV=development yarn dev:run",
     "start": "node ./src/app.js",
     "lint:js": "eslint --ext \".js\" --ignore-path .gitignore .",
@@ -21,7 +21,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
     "cross-env": "^7.0.3",
-    "eslint": "^8.7.0",
-    "nodemon": "^2.0.15"
+    "eslint": "^8.7.0"
   }
 }
