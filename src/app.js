@@ -1,13 +1,24 @@
 import http from 'http'
 import ping from 'net-ping'
+import dotenv from 'dotenv'
+
+// Loading '.env'
+dotenv.config()
 
 // Config
 const isDev = process.env.NODE_ENV === 'development'
-const HOST = 'http://www.google.de'
+const REPEAT = process.env.REPEAT || 10
+const CONTINOUS = process.env.CONTINOUS ? true : false
+const HOST = process.env.HOST || 'http://www.google.de' // 'http://raspberrypi/'
 
 // Dev Check
 if (isDev) {
     console.log('DEV Env:', isDev)
+    if (CONTINOUS) {
+        console.log('Pinging continually:', CONTINOUS)
+    } else {
+        console.log('Pinging multiple times:', REPEAT)
+    }
 }
 
 // Returns Promise
@@ -29,7 +40,7 @@ function getIpByHost(host) {
 function pingIp(remoteAdress) {
     return new Promise((resolve, reject) => {
         const options = {
-            retries: 3,
+            retries: 1,
             timeout: 2000,
             packetSize: 64
         }
@@ -64,7 +75,7 @@ function pingIp(remoteAdress) {
 // Waiting between pings
 function wait(time){
     return new Promise((resolve) => {
-        console.log('waiting...')
+        console.log('*')
         setTimeout(resolve, time)
     })
 }
@@ -72,14 +83,26 @@ function wait(time){
 // Main Function
 async function main() {
     const remoteAdress = await getIpByHost(HOST)
-    const array = [remoteAdress, remoteAdress, remoteAdress, remoteAdress]
 
-    for (let index = 0; index < array.length; index++) {
-        const adress = array[index]
-        await pingIp(adress).catch((e) => {
-            console.log(e)
-        })
-        wait(1000)
+    if (CONTINOUS) {
+        let done = false
+        let index = 0
+        while (!done) {
+            console.log('Ping:', index+1)
+            index++
+            await pingIp(remoteAdress).catch((e) => {
+                console.log(e)
+            })
+            await wait(1000)
+        }
+    } else {
+        for (let index = 0; index < REPEAT; index++) {
+            console.log('Ping:', index+1)
+            await pingIp(remoteAdress).catch((e) => {
+                console.log(e)
+            })
+            await wait(1000)
+        }
     }
 }
 
