@@ -61,15 +61,18 @@ function pingIp(remoteAdress) {
             const ms = rcvd - sent
             if (error) {
                 if (error instanceof ping.RequestTimedOutError) {
-                    console.log(`${target} : Not alive (ms=${ms})`)
-                    reject(false)
+                    const report = `${target} : Not alive (ms=${ms})`
+                    console.log(report)
+                    reject(report)
                 } else {
-                    console.log(`${target} : ${error.toString()} (ms=${ms})`)
-                    reject(false)
+                    const report = `${target} : ${error.toString()} (ms=${ms})`
+                    console.log(report)
+                    reject(report)
                 }
             } else {
-                console.log(`${target} : Alive (ms=${ms})`)
-                resolve(true)
+                const report = `${target} : Alive (ms=${ms})`
+                console.log(report)
+                resolve(report)
             }
         })
     })
@@ -112,6 +115,7 @@ function wait(time){
 // Main Function
 async function main() {
     const remoteAdress = await getIpByHost(HOST)
+    const reports = []
 
     if (CONTINOUS) {
         let done = false
@@ -119,23 +123,25 @@ async function main() {
         while (!done) {
             console.log('Ping:', index+1)
             index++
-            await pingIp(remoteAdress).catch((e) => {
+            const result = await pingIp(remoteAdress).catch((e) => {
                 console.log(e)
             })
+            reports.push(result)
             await wait(1000)
         }
     } else {
         for (let index = 0; index < REPEAT; index++) {
             console.log('Ping:', index+1)
-            await pingIp(remoteAdress).catch((e) => {
+            const result = await pingIp(remoteAdress).catch((e) => {
                 console.log(e)
             })
+            reports.push(result)
             await wait(1000)
         }
     }
 
     sendNotification({
-        message: 'Yaaayy... test successful.',	// required
+        message: reports.join('\n'),
         title: 'Ping'
     })
 }
