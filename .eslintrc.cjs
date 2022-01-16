@@ -1,10 +1,12 @@
 module.exports = {
     root: true,
     env: {
-        browser: true,
         node: true
     },
-    parserOptions: {},
+    parserOptions: {
+        parser: '@babel/eslint-parser',
+        requireConfigFile: false
+    },
     extends: [],
     plugins: [],
     // add your custom rules here
