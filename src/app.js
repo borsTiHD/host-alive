@@ -25,18 +25,63 @@ function getIpByHost(host) {
     })
 }
 
-// Main Function
-async function main() {
-    const remoteAdress = await getIpByHost(HOST)
-    const session = ping.createSession()
-    session.pingHost(remoteAdress, (error, target) => {
-        if (error) {
-            console.log(target + ': ' + error.toString ())
-        } else {
-            console.log(target + ': Alive')
+// Ping Wrapper
+function pingIp(remoteAdress) {
+    return new Promise((resolve, reject) => {
+        const options = {
+            retries: 3,
+            timeout: 2000,
+            packetSize: 64
         }
+    
+        // Create Session
+        const session = ping.createSession(options)
+
+        // Session Error Event
+        session.on('error', (error) => {
+            console.trace(error.toString())
+        })
+    
+        // Session ping
+        session.pingHost(remoteAdress, (error, target, sent, rcvd) => {
+            const ms = rcvd - sent
+            if (error) {
+                if (error instanceof ping.RequestTimedOutError) {
+                    console.log(`${target} : Not alive (ms=${ms})`)
+                    reject(false)
+                } else {
+                    console.log(`${target} : ${error.toString()} (ms=${ms})`)
+                    reject(false)
+                }
+            } else {
+                console.log(`${target} : Alive (ms=${ms})`)
+                resolve(true)
+            }
+        })
     })
 }
 
+// Waiting between pings
+function wait(time){
+    return new Promise((resolve) => {
+        console.log('waiting...')
+        setTimeout(resolve, time)
+    })
+}
+
+// Main Function
+async function main() {
+    const remoteAdress = await getIpByHost(HOST)
+    const array = [remoteAdress, remoteAdress, remoteAdress, remoteAdress]
+
+    for (let index = 0; index < array.length; index++) {
+        const adress = array[index]
+        await pingIp(adress).catch((e) => {
+            console.log(e)
+        })
+        wait(1000)
+    }
+}
+
 // Starting...
-main()
+await main()
