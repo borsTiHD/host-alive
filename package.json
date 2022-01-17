@@ -15,13 +15,13 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "dotenv": "^14.1.0",
     "moment": "^2.29.1",
     "net-ping": "^1.2.3",
     "pushover-notifications": "^1.2.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "dotenv": "^12.0.4",
     "eslint": "^8.7.0"
   }
 }
