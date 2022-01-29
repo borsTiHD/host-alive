@@ -21,7 +21,7 @@ export default (remoteAdress) => {
         // Session ping
         session.pingHost(remoteAdress, (error, target, sent, rcvd) => {
             const ms = rcvd - sent
-            const receive = moment(new Date()).format('DD.MM.YY HH:mm:ss')
+            const receive = moment().format('DD.MM.YY HH:mm:ss')
             if (error) {
                 if (error instanceof ping.RequestTimedOutError) {
                     const report = `${receive} -> ${target} : Not alive (ms=${ms})`
