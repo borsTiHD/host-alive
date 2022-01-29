@@ -9,7 +9,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development yarn start",
+    "dev": "cross-env NODE_ENV=development node ./src/app.js",
     "start": "node ./src/app.js",
     "lint:js": "eslint --ext \".js\" --ignore-path .gitignore .",
     "lint": "yarn lint:js"

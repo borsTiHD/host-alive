@@ -31,7 +31,7 @@ if (isDev) {
 if (CONTINOUS) {
     // Continous Mode
     // Pinging continous until...
-    modeContinous({ isDev, HOST, MAX_LOSS, MAX_REPORTS, MONITORING_PERIOD, WAITING_ON_ERROR })
+    await modeContinous({ isDev, HOST, MAX_LOSS, MAX_REPORTS, MONITORING_PERIOD, WAITING_ON_ERROR })
 } else {
     // Repeating Mode
     // Attempts to ping 'REPEAT' times and sends a report
