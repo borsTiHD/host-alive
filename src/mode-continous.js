@@ -14,7 +14,6 @@ export default async(settings) => {
     let index = 0
     let losses = 0 // Loss counter -> a report is sent only when a sufficient number ('MAX_LOSS') has been counted up
     let startedPeriod = moment()
-    console.log('STARTED:', startedPeriod.format('DD.MM.YY HH:mm:ss'))
 
     while (!done) {
         console.log('Ping:', index+1)
