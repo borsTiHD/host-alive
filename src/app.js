@@ -13,9 +13,9 @@ const HOST = process.env.HOST || 'http://www.google.de' // 'http://raspberrypi/'
 
 // Settings for continous mode
 const MAX_LOSS = 2 // How many pings can be lossed before sending a report (only in continous mode)
-const MAX_REPORTS = 10 // How many reports should be send
-const MONITORING_PERIOD = 1000 * 60 * 15 // 15 min -> Time period that is monitored before the counter is reset.
-const WAITING_ON_ERROR = 1000 * 60 * 15 // 15 min -> Waiting time after sending an error report before trying to ping again
+const MAX_REPORTS = 60 // How many reports should be send
+const MONITORING_PERIOD = 1 // In minutes -> Time period that is monitored before the counter is reset
+const WAITING_ON_ERROR = 1000 * 60 * 15 // In seconds - 15 min -> Waiting time after sending an error report before trying to ping again
 
 // Dev Check
 if (isDev) {
