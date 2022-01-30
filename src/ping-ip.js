@@ -9,15 +9,16 @@ export default (remoteAdress) => {
             timeout: 2000,
             packetSize: 64
         }
-    
+
         // Create Session
         const session = ping.createSession(options)
 
         // Session Error Event
         session.on('error', (error) => {
-            console.trace(error.toString())
+            console.log('Error:', error)
+            session.close()
         })
-    
+
         // Session ping
         session.pingHost(remoteAdress, (error, target, sent, rcvd) => {
             const ms = rcvd - sent
@@ -37,6 +38,7 @@ export default (remoteAdress) => {
                 console.log(report)
                 resolve(report)
             }
+            session.close()
         })
     })
 }
