@@ -27,6 +27,19 @@ if (isDev) {
     }
 }
 
+function exitHandler(eventType, exitCode) {
+    console.log('Event:', eventType)
+    console.log('Exitcode:', exitCode)
+    if (exitCode === 'SIGINT') {
+        process.exitCode = 1
+        // process.exit()
+    }
+}
+
+['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException', 'SIGTERM'].forEach((eventType) => {
+    process.on(eventType, exitHandler.bind(null, eventType))
+})
+
 // Starting...
 if (CONTINOUS) {
     // Continous Mode
